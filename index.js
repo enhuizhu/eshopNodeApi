@@ -2,12 +2,6 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require("client-sessions");
-/**
-* should init the db at the very begining, otherwise
-* in the user model can have the situation that db is 
-* not defined
-**/
-var mongoDb = require("./configs/dbConfig");
 
 app.use(session({
     cookieName: 'session',
@@ -64,10 +58,7 @@ app.use(express.static(__dirname + '/public'));
 /**
 * start route
 **/
-require("./routes/route.js")(app);
+var route = require("./routes/route.js");
+routeIns = new route(app);
 
 app.listen(3000);
-
-
-
-

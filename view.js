@@ -3,11 +3,11 @@
 module.exports = {
     data:{},
 
-    assign: function(key,value){
+    assign: (key, value) => {
         this.data[key] = value;
     },
 
-    display : function(fileName, res){         
+    display : (fileName, res) => {         
        	res.render(fileName , this.data);
     }
 }

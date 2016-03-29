@@ -1,47 +1,24 @@
 var view = require("../view.js");
-/**
-* import the controllers 
-**/
 
-/**
-* all the route will be here
-**/
-module.exports = function(app){
-	var controllers = {};
-	
-	function response( obj, req, res ){
-		if( typeof controllers[ obj.controller ] == 'undefined' ) {
-			controllers[ obj.controller ] = require("../controllers/" + obj.controller +  ".js");
-			controllers[ obj.controller ] = controllers[obj.controller];	
+module.exports = class route {
+	constructor(app) {
+		this.controllers = {};
+		this.app = app;
+		this.setUpRoutes();
+	}
+
+	response(obj, req, res) {
+		if( typeof this.controllers[ obj.controller ] == 'undefined' ) {
+			this.controllers[ obj.controller ] = require("../controllers/" + obj.controller +  ".js");
+			this.controllers[ obj.controller ] = this.controllers[obj.controller];	
 		}
 		
-		controllers[obj.controller][obj.action](req, res);
+		this.controllers[obj.controller][obj.action](req, res);
 	}
-	
-	app.get('/', function(req, res) {
-	   view.display("helloWorld",res);
-	});
 
-	app.get('/api',function(req,res){
-		response({
-			controller: 'main',
-			action: 'getAll'
-		}, req, res );
-	});
-
-    app.post('/api',function(req,res){
-        response({
-            controller:'main',
-            action : 'addUser'
-        },req,res);
-    });	
-
-	app.get('/api2',function(req,res){
-		response({
-			controller: 'main',
-			action: 'welcome'
-		}, req, res );
-	});
-
-	
+	setUpRoutes() {
+		this.app.get('/', function(req, res) {
+	   		view.display("helloWorld",res);
+		});
+	}
 }
