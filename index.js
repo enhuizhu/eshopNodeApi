@@ -3,6 +3,10 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require("client-sessions");
 
+view = require("./core/view");
+Controller = require("./core/controller");
+
+
 app.use(session({
     cookieName: 'session',
     secret: 'eg[isfd-8yF9-7w2315df{}+Ijsli;;to8',
@@ -13,6 +17,8 @@ app.use(session({
 }));
 
 app.use(function(req, res, next) {
+    view.setRespAndReq(res, req);
+    
     if (req.session) {
         if (!req.session.visit) {
             req.session.visit = 0;
@@ -58,7 +64,7 @@ app.use(express.static(__dirname + '/public'));
 /**
 * start route
 **/
-var route = require("./routes/route.js");
+var route = require("./routes/route");
 routeIns = new route(app);
 
 app.listen(3000);
